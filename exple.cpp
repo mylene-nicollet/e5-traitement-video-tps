@@ -80,17 +80,32 @@ int main(int argc, char** argv)
     cv::Mat dest;
     char key;
     double angle = 0;
-    while((key = cv::waitKey(0)) != 'q'){
-      if('l' == key){
+    double light = 0;
+    double contrast = 1;
+    while((key = cv::waitKey(0)) != 'q'){  //quit
+      if('l' == key){  //left
         angle += 15;
       }
-      if('r' == key){
+      if('r' == key){  //right
         angle -= 15;
       }
-      if('s' == key){
-        cv::imwrite("rotated_im.png", dest);
+      if('s' == key){  //save
+        cv::imwrite("saved_image.png", dest);
       }
-      rotateImage(img, angle, dest);
+      if('w' == key){  //white pour light
+        light += 50;
+      }
+      if('b' == key){  //black pour dark
+        light -= 50;
+      }
+      if('c' == key){  //color pour + de contrast
+        contrast += 0.5;
+      }
+      if('f' == key){  //fade pour - de contrast
+        contrast -= 0.5;
+      }
+      img.convertTo(dest, -1, contrast, light);
+      rotateImage(dest, angle, dest);
       cv::imshow("image", dest);
     }
   }
